@@ -27,8 +27,8 @@ Enemy.prototype.render = function() {
 
 class Player {
     constructor(x, y) {
-        this.x = 5;
-        this.y = 2;
+        this.x = x;
+        this.y = y;
         this.sprite = 'images/char-boy.png';
     }
     update() {
@@ -52,7 +52,7 @@ let allEnemies = []
 
 // Place the player object in a variable called player
 
-let player = new Player;
+let player = new Player(5,2);
 
 
 // This listens for key presses and sends the keys to your
