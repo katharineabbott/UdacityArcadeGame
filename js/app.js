@@ -31,12 +31,13 @@ class Player {
     }
 
     render() {
-
+        this.sprite = 'images/char-boy.png';
     }
 
     handleInput() {
 
     }
+    
 };
 
 
