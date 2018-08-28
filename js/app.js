@@ -26,7 +26,7 @@ Enemy.prototype.render = function() {
 // a handleInput() method.
 
 class Player {
-    update: function () {
+    update() {
 
     }
 };
