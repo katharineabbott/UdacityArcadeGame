@@ -42,13 +42,13 @@ class Player {
     }
 
     handleInput(pressedKey) {
-        if (pressedKey === 'left') {
+        if ((pressedKey === 'left') && (this.row > 0)) {
             this.row = this.row - 1;
-        } else if (pressedKey === 'up') {
+        } else if ((pressedKey === 'up') && (this.col > 0)) {
             this.col = this.col - 1;
-        } else if (pressedKey === 'right') {
+        } else if ((pressedKey === 'right') && (this.row < 4)) {
             this.row = this.row + 1;
-        } else if (pressedKey === 'down') {
+        } else if ((pressedKey === 'down') && (this.col < 5)) {
             this.col = this.col + 1;
         }
     }
