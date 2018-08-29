@@ -41,8 +41,16 @@ class Player {
         ctx.drawImage(Resources.get(this.sprite), this.row * 101, this.col * 76);
     }
 
-    handleInput() {
-        
+    handleInput(pressedKey) {
+        if ((pressedKey === 'left') && (this.row > 0)) {
+            this.row = this.row - 1;
+        } else if ((pressedKey === 'up') && (this.col > 0)) {
+            this.col = this.col - 1;
+        } else if ((pressedKey === 'right') && (this.row < 4)) {
+            this.row = this.row + 1;
+        } else if ((pressedKey === 'down') && (this.col < 5)) {
+            this.col = this.col + 1;
+        }
     }
     
 };
