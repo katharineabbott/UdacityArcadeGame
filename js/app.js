@@ -42,7 +42,15 @@ class Player {
     }
 
     handleInput() {
-        
+        if (reference ==== left key) {
+            row = row - 1;
+        } else if (reference ==== up key) {
+            col = col - 1;
+        } else if (reference ==== right key) {
+            row = row + 1;
+        } else if (reference ==== down key) {
+            col = col + 1;
+        }
     }
     
 };
