@@ -2,12 +2,10 @@
 var Enemy = function() {
     // Variables applied to each of our instances go here,
     // we've provided one for you to get started
-
+   
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
     this.sprite = 'images/enemy-bug.png';
-    this.initialLocation = 0;
-    this.speed = 0;
 };
 
 // Update the enemy's position, required method for game
@@ -32,6 +30,7 @@ class Player {
         this.row = row;
         this.col = col;
         this.sprite = 'images/char-boy.png';
+
     }
     update() {
 
