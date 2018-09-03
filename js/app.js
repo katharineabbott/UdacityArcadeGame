@@ -40,7 +40,9 @@ class Player {
 
     }
     update() {
-
+        if (Enemy.x === Player.x) {
+            console.log("Collision");
+        }
     }
 
     render() {
