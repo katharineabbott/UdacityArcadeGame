@@ -40,9 +40,13 @@ class Player {
 
     }
     update() {
-        if (Enemy.x === Player.x) {
+        let playerXEnd = this.x + 100;
+        let enemyXEnd = allEnemies[0].x + 100;
+        let playerYEnd = this.y + 170;
+        let enemyYEnd = allEnemies[0].y + 170;
+        if ((this.x >= allEnemies[0].x) && (this.x <= enemyXEnd) && (this.y >= allEnemies[0].y) && (this.y <= enemyYEnd)) {
             console.log("Collision");
-        }
+        } 
     }
 
     render() {
