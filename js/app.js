@@ -32,11 +32,11 @@ Enemy.prototype.render = function() {
 };
 
 function getXCoordinateInPixels(x) {
-    return x * 101;
+    return x * 83;
 };
 
 function getYCoordinateInPixels(y) {
-    return y * 83;
+    return y * 101;
 };
 
 
@@ -53,8 +53,8 @@ class Player {
     }
 
     resetPlayer() {
-        this.x = 202;
-        this.y = 380;
+        this.x = getXCoordinateInPixels(2.4);
+        this.y = getYCoordinateInPixels(3.7);
     }
 
     update() {
