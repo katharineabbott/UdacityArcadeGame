@@ -33,9 +33,9 @@ Enemy.prototype.render = function() {
 // a handleInput() method.
 
 class Player {
-    constructor(row, col) {
-        this.row = row;
-        this.col = col;
+    constructor(x, y) {
+        this.x = x;
+        this.y = y;
         this.sprite = 'images/char-boy.png';
 
     }
@@ -44,24 +44,26 @@ class Player {
         let enemyXEnd = allEnemies[0].x + 100;
         let playerYEnd = this.y + 170;
         let enemyYEnd = allEnemies[0].y + 170;
-        if ((this.x >= allEnemies[0].x) && (this.x <= enemyXEnd) && (this.y >= allEnemies[0].y) && (this.y <= enemyYEnd)) {
-            console.log("Collision");
-        } 
+        for (var enemy in allEnemies) {
+            if ((this.x >= enemy.x) && (this.x <= enemyXEnd) && (this.y >= enemy.y) && (this.y <= enemyYEnd)) {
+                console.log("Collision");
+            } 
+          };
     }
 
     render() {
-        ctx.drawImage(Resources.get(this.sprite), this.row * 101, this.col * 76);
+        ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
     }
 
     handleInput(pressedKey) {
-        if ((pressedKey === 'left') && (this.row > 0)) {
-            this.row = this.row - 1;
-        } else if ((pressedKey === 'up') && (this.col > 0)) {
-            this.col = this.col - 1;
-        } else if ((pressedKey === 'right') && (this.row < 4)) {
-            this.row = this.row + 1;
-        } else if ((pressedKey === 'down') && (this.col < 5)) {
-            this.col = this.col + 1;
+        if ((pressedKey === 'left') && (this.x > 0)) {
+            this.x = this.x - 101;
+        } else if ((pressedKey === 'up') && (this.y > 0)) {
+            this.y = this.y - 80;
+        } else if ((pressedKey === 'right') && (this.x < 400)) {
+            this.x = this.x + 101;
+        } else if ((pressedKey === 'down') && (this.y < 350)) {
+            this.y = this.y + 80;
         }
     }
     
@@ -77,7 +79,7 @@ let allEnemies = [
 
 // Place the player object in a variable called player
 
-let player = new Player(2, 5);
+let player = new Player(202, 380);
 
 
 // This listens for key presses and sends the keys to your
