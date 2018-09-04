@@ -20,7 +20,7 @@ Enemy.prototype.update = function(dt) {
         this.x = -400
     } else {
         this.x = this.x + this.speed * dt;
-}
+    }
 };
 
 // Draw the enemy on the screen, required method for game
@@ -44,7 +44,7 @@ class Player {
         this.x = 202;
         this.y = 380;
     }
-    
+
     update() {
         allEnemies.forEach((enemy) => {
             let playerXStart = this.x + 20;
@@ -56,22 +56,27 @@ class Player {
             let enemyYStart = enemy.y + 77;
             let enemyYEnd = enemy.y + 143;
             if ((playerXStart >= enemyXStart) && (playerXStart <= enemyXEnd) && (playerYStart >= enemyYStart) && (playerYStart <= enemyYEnd)) {
-                this.x = 202;
-                this.y = 380;
+                this.resetPlayer();
             } else if ((playerXEnd >= enemyXStart) && (playerXEnd <= enemyXEnd) && (playerYStart >= enemyYStart) && (playerYStart <= enemyYEnd)) {
-                this.x = 202;
-                this.y = 380;
+                this.resetPlayer();
             } else if ((playerYStart >= enemyYStart) && (playerYStart <= enemyYEnd) && (playerXStart >= enemyXStart) && (playerXStart <= enemyXEnd)) {
-                this.x = 202;
-                this.y = 380;
+                this.resetPlayer();
             } else if ((playerYEnd >= enemyYStart) && (playerYEnd <= enemyYEnd) && (playerXStart >= enemyXStart) && (playerXStart <= enemyXEnd)) {
-                this.x = 202;
-                this.y = 380;
+                this.resetPlayer();
             }
           });
 
         if (this.y <= 0) {
-            resetPlayer();
+            let popup = document.querySelector('.winner');
+            popup.classList.remove('hide');
+            this.resetPlayer();
+            let playAgain = document.querySelector('.play-again');
+            playAgain.addEventListener('click', function() {
+                popup.classList.add('hide');
+                allEnemies.forEach((enemy) => {
+                    enemy.x = -100;
+                });
+            })
         }
     }
 
