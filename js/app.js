@@ -49,6 +49,10 @@ class Player {
                 console.log("Collision");
             } else if ((playerXEnd >= enemy.x) && (playerXEnd <= enemyXEnd) && (this.y >= enemy.y) && (this.y <= enemyYEnd)) {
                 console.log("Collision");
+            } else if ((this.y >= enemy.y) && (this.y <= enemyYEnd) && (this.x >= enemy.x) && (this.x <= enemyXEnd)) {
+                console.log("Collision");
+            } else if ((playerYEnd >= enemy.y) && (playerYEnd <= enemyYEnd) && (this.x >= enemy.x) && (this.x <= enemyXEnd)) {
+                console.log("Collision");
             }
           });
     }
