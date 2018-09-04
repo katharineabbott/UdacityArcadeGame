@@ -28,6 +28,7 @@ Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
+
 // Now write your own player class
 // This class requires an update(), render() and
 // a handleInput() method.
@@ -74,7 +75,9 @@ class Player {
             playAgain.addEventListener('click', function() {
                 popup.classList.add('hide');
                 allEnemies.forEach((enemy) => {
-                    enemy.x = -100;
+                    let max = -800;
+                    let min = -20
+                    enemy.x = Math.floor(Math.random() * (max - min)) + min;
                 });
             })
         }
@@ -102,9 +105,13 @@ class Player {
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 let allEnemies = [
-    new Enemy(-100,60,40),
-    new Enemy(-150,145,80),
-    new Enemy(-150,230,80) 
+    new Enemy(-100,60,20),
+    new Enemy(-50,60,120),
+    new Enemy(-2500,60,380),
+    new Enemy(-2000,145,420),
+    new Enemy(-20,145,340),
+    new Enemy(-250,230,200),
+    new Enemy(-20,230,380) 
 ]
 
 // Place the player object in a variable called player
