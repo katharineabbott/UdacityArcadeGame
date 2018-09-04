@@ -16,6 +16,9 @@ Enemy.prototype.update = function(dt) {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
+
+    // This if statement detects if the Enemy has crossed the 
+    // screen and if not multiplies the movement by tge dt parameter.
     if (this.x > 505) {
         this.x = -400
     } else {
@@ -26,6 +29,14 @@ Enemy.prototype.update = function(dt) {
 // Draw the enemy on the screen, required method for game
 Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+};
+
+function getXCoordinateInPixels(x) {
+    return x * 101;
+};
+
+function getYCoordinateInPixels(y) {
+    return y * 83;
 };
 
 
@@ -48,14 +59,22 @@ class Player {
 
     update() {
         allEnemies.forEach((enemy) => {
-            let playerXStart = this.x + 20;
-            let playerXEnd = this.x + 80;
-            let enemyXStart = enemy.x + 1;
-            let enemyXEnd = enemy.x + 99;
-            let playerYStart = this.y + 110;
-            let playerYEnd = this.y + 135;
-            let enemyYStart = enemy.y + 77;
-            let enemyYEnd = enemy.y + 143;
+            let playerTopContactPixel = 110;
+            let playerBottomContactPixel = 135;
+            let playerLeftContactPixel = 17;
+            let playerRightContactPixel = 80;
+            let enemyTopContactPixel = 77;
+            let enemyBottomContactPixel = 143;
+            let enemyLeftContactPixel = 1;
+            let enemyRightContactPixel = 99;
+            let playerXStart = this.x + playerLeftContactPixel;
+            let playerXEnd = this.x + playerRightContactPixel;
+            let enemyXStart = enemy.x + enemyLeftContactPixel;
+            let enemyXEnd = enemy.x + enemyRightContactPixel;
+            let playerYStart = this.y + playerTopContactPixel;
+            let playerYEnd = this.y + playerBottomContactPixel;
+            let enemyYStart = enemy.y + enemyTopContactPixel;
+            let enemyYEnd = enemy.y + enemyBottomContactPixel;
             if ((playerXStart >= enemyXStart) && (playerXStart <= enemyXEnd) && (playerYStart >= enemyYStart) && (playerYStart <= enemyYEnd)) {
                 this.resetPlayer();
             } else if ((playerXEnd >= enemyXStart) && (playerXEnd <= enemyXEnd) && (playerYStart >= enemyYStart) && (playerYStart <= enemyYEnd)) {
@@ -68,12 +87,12 @@ class Player {
           });
 
         if (this.y <= 0) {
-            let popup = document.querySelector('.winner');
-            popup.classList.remove('hide');
+            let $popup = document.querySelector('.winner');
+            $popup.classList.remove('hide');
             this.resetPlayer();
-            let playAgain = document.querySelector('.play-again');
-            playAgain.addEventListener('click', function() {
-                popup.classList.add('hide');
+            let $playAgain = document.querySelector('.play-again');
+            $playAgain.addEventListener('click', function() {
+                $popup.classList.add('hide');
                 allEnemies.forEach((enemy) => {
                     let max = -800;
                     let min = -20
