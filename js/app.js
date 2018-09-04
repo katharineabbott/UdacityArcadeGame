@@ -19,7 +19,7 @@ Enemy.prototype.update = function(dt) {
     if (this.x > 505) {
         this.x = -400
     } else {
-    this.x = this.x + this.speed * dt;
+        this.x = this.x + this.speed * dt;
 }
 };
 
@@ -41,20 +41,33 @@ class Player {
     }
     update() {
         allEnemies.forEach((enemy) => {
-            let playerXEnd = this.x + 100;
-            let enemyXEnd = enemy.x + 100;
-            let playerYEnd = this.y + 170;
-            let enemyYEnd = enemy.y + 170;
-            if ((this.x >= enemy.x) && (this.x <= enemyXEnd) && (this.y >= enemy.y) && (this.y <= enemyYEnd)) {
-                console.log("Collision");
-            } else if ((playerXEnd >= enemy.x) && (playerXEnd <= enemyXEnd) && (this.y >= enemy.y) && (this.y <= enemyYEnd)) {
-                console.log("Collision");
-            } else if ((this.y >= enemy.y) && (this.y <= enemyYEnd) && (this.x >= enemy.x) && (this.x <= enemyXEnd)) {
-                console.log("Collision");
-            } else if ((playerYEnd >= enemy.y) && (playerYEnd <= enemyYEnd) && (this.x >= enemy.x) && (this.x <= enemyXEnd)) {
-                console.log("Collision");
+            let playerXStart = this.x + 17;
+            let playerXEnd = this.x + 84;
+            let enemyXStart = enemy.x + 1;
+            let enemyXEnd = enemy.x + 99;
+            let playerYStart = this.y + 108;
+            let playerYEnd = this.y + 139;
+            let enemyYStart = enemy.y + 77;
+            let enemyYEnd = enemy.y + 143;
+            if ((playerXStart >= enemyXStart) && (playerXStart <= enemyXEnd) && (playerYStart >= enemyYStart) && (playerYStart <= enemyYEnd)) {
+                this.x = 202;
+                this.y = 380;
+            } else if ((playerXEnd >= enemyXStart) && (playerXEnd <= enemyXEnd) && (playerYStart >= enemyYStart) && (playerYStart <= enemyYEnd)) {
+                this.x = 202;
+                this.y = 380;
+            } else if ((playerYStart >= enemyYStart) && (playerYStart <= enemyYEnd) && (playerXStart >= enemyXStart) && (playerXStart <= enemyXEnd)) {
+                this.x = 202;
+                this.y = 380;
+            } else if ((playerYEnd >= enemyYStart) && (playerYEnd <= enemyYEnd) && (playerXStart >= enemyXStart) && (playerXStart <= enemyXEnd)) {
+                this.x = 202;
+                this.y = 380;
             }
           });
+
+        if (this.y <= 0) {
+            this.x = 202;
+            this.y = 380;
+        }
     }
 
     render() {
@@ -80,7 +93,8 @@ class Player {
 // Place all enemy objects in an array called allEnemies
 let allEnemies = [
     new Enemy(-100,60,40),
-    new Enemy(-150,120,80) 
+    new Enemy(-150,145,80),
+    new Enemy(-150,230,80) 
 ]
 
 // Place the player object in a variable called player
