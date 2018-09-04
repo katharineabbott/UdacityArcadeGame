@@ -39,14 +39,20 @@ class Player {
         this.sprite = 'images/char-boy.png';
 
     }
+
+    resetPlayer() {
+        this.x = 202;
+        this.y = 380;
+    }
+    
     update() {
         allEnemies.forEach((enemy) => {
-            let playerXStart = this.x + 17;
-            let playerXEnd = this.x + 84;
+            let playerXStart = this.x + 20;
+            let playerXEnd = this.x + 80;
             let enemyXStart = enemy.x + 1;
             let enemyXEnd = enemy.x + 99;
-            let playerYStart = this.y + 108;
-            let playerYEnd = this.y + 139;
+            let playerYStart = this.y + 110;
+            let playerYEnd = this.y + 135;
             let enemyYStart = enemy.y + 77;
             let enemyYEnd = enemy.y + 143;
             if ((playerXStart >= enemyXStart) && (playerXStart <= enemyXEnd) && (playerYStart >= enemyYStart) && (playerYStart <= enemyYEnd)) {
@@ -65,8 +71,7 @@ class Player {
           });
 
         if (this.y <= 0) {
-            this.x = 202;
-            this.y = 380;
+            resetPlayer();
         }
     }
 
