@@ -49,7 +49,8 @@ Enemy.prototype.render = function() {
 };
 
 // Multiply x and y coordinates to convert row/column
-// numbers into pixels.
+// numbers into pixels. Multipliers found in line 137
+// of engine.js
 
 function getXCoordinateInPixels(x) {
     return x * 101;
