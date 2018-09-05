@@ -1,3 +1,20 @@
+// Sets selectors and event listeners to handle the end of
+// game popup and restart button.
+function gameWon() {
+    let $popup = document.querySelector('.winner');
+    $popup.classList.remove('hide');
+    player.resetPlayer();
+    let $playAgain = document.querySelector('.play-again');
+    $playAgain.addEventListener('click', function() {
+        $popup.classList.add('hide');
+        allEnemies.forEach((enemy) => {
+            let max = getXCoordinateInPixels(-5);
+            let min = getXCoordinateInPixels(-1);
+            enemy.x = Math.floor(Math.random() * (max - min)) + min;
+        });
+    });
+}
+
 // Enemies our player must avoid
 var Enemy = function(x, y, speed) {
     // Variables applied to each of our instances go here,
@@ -16,11 +33,14 @@ Enemy.prototype.update = function(dt) {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
-    if (this.x > 505) {
-        this.x = -400
+
+    // This detects if the Enemy has crossed the screen and
+    // if not multiplies the movement by tge dt parameter.
+    if (this.x > getXCoordinateInPixels(5)) {
+        this.x = getXCoordinateInPixels(-5);
     } else {
         this.x = this.x + this.speed * dt;
-    }
+    };
 };
 
 // Draw the enemy on the screen, required method for game
@@ -28,6 +48,17 @@ Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
+// Multiply x and y coordinates to convert row/column
+// numbers into pixels. Multipliers found in line 137
+// of engine.js
+
+function getXCoordinateInPixels(x) {
+    return x * 101;
+}
+
+function getYCoordinateInPixels(y) {
+    return y * 83;
+}
 
 // Now write your own player class
 // This class requires an update(), render() and
@@ -38,86 +69,100 @@ class Player {
         this.x = x;
         this.y = y;
         this.sprite = 'images/char-boy.png';
+    };
 
-    }
-
+    // Reset the player back to the starting position.
     resetPlayer() {
-        this.x = 202;
-        this.y = 380;
-    }
+        this.x = getXCoordinateInPixels(2);
+        this.y = getYCoordinateInPixels(4.6);
+    };
 
+    // Takes the points in the player/enemy images where the
+    // sprite exists for more accurate collision, detects
+    // collisions, calls resetPlayer function on collision,
+    // and checks for the game being won (reaching water).
     update() {
         allEnemies.forEach((enemy) => {
-            let playerXStart = this.x + 20;
-            let playerXEnd = this.x + 80;
-            let enemyXStart = enemy.x + 1;
-            let enemyXEnd = enemy.x + 99;
-            let playerYStart = this.y + 110;
-            let playerYEnd = this.y + 135;
-            let enemyYStart = enemy.y + 77;
-            let enemyYEnd = enemy.y + 143;
-            if ((playerXStart >= enemyXStart) && (playerXStart <= enemyXEnd) && (playerYStart >= enemyYStart) && (playerYStart <= enemyYEnd)) {
+            let playerTopContactPixel = 110;
+            let playerBottomContactPixel = 135;
+            let playerLeftContactPixel = 20;
+            let playerRightContactPixel = 80;
+            let enemyTopContactPixel = 77;
+            let enemyBottomContactPixel = 143;
+            let enemyLeftContactPixel = 1;
+            let enemyRightContactPixel = 99;
+            let playerXStart = this.x + playerLeftContactPixel;
+            let playerXEnd = this.x + playerRightContactPixel;
+            let enemyXStart = enemy.x + enemyLeftContactPixel;
+            let enemyXEnd = enemy.x + enemyRightContactPixel;
+            let playerYStart = this.y + playerTopContactPixel;
+            let playerYEnd = this.y + playerBottomContactPixel;
+            let enemyYStart = enemy.y + enemyTopContactPixel;
+            let enemyYEnd = enemy.y + enemyBottomContactPixel;
+            // If player is to the right of enemy
+            if ((playerXStart >= enemyXStart) && (playerXStart <= enemyXEnd) &&
+            (playerYStart >= enemyYStart) && (playerYStart <= enemyYEnd)) {
                 this.resetPlayer();
-            } else if ((playerXEnd >= enemyXStart) && (playerXEnd <= enemyXEnd) && (playerYStart >= enemyYStart) && (playerYStart <= enemyYEnd)) {
+            // If player is to the left of enemy
+            } else if ((playerXEnd >= enemyXStart) && (playerXEnd <= enemyXEnd) &&
+            (playerYStart >= enemyYStart) && (playerYStart <= enemyYEnd)) {
                 this.resetPlayer();
-            } else if ((playerYStart >= enemyYStart) && (playerYStart <= enemyYEnd) && (playerXStart >= enemyXStart) && (playerXStart <= enemyXEnd)) {
+            // If player is above enemy
+            } else if ((playerYStart >= enemyYStart) && (playerYStart <= enemyYEnd) &&
+            (playerXStart >= enemyXStart) && (playerXStart <= enemyXEnd)) {
                 this.resetPlayer();
-            } else if ((playerYEnd >= enemyYStart) && (playerYEnd <= enemyYEnd) && (playerXStart >= enemyXStart) && (playerXStart <= enemyXEnd)) {
+            // If player is below enemy
+            } else if ((playerYEnd >= enemyYStart) && (playerYEnd <= enemyYEnd) &&
+            (playerXStart >= enemyXStart) && (playerXStart <= enemyXEnd)) {
                 this.resetPlayer();
-            }
+            };
           });
 
         if (this.y <= 0) {
-            let popup = document.querySelector('.winner');
-            popup.classList.remove('hide');
-            this.resetPlayer();
-            let playAgain = document.querySelector('.play-again');
-            playAgain.addEventListener('click', function() {
-                popup.classList.add('hide');
-                allEnemies.forEach((enemy) => {
-                    let max = -800;
-                    let min = -20
-                    enemy.x = Math.floor(Math.random() * (max - min)) + min;
-                });
-            })
-        }
-    }
+            gameWon();
+        };
+    };
 
     render() {
         ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-    }
+    };
 
+    // Increments player position by 1 row/column when the
+    // corresponding key is pressed.
     handleInput(pressedKey) {
         if ((pressedKey === 'left') && (this.x > 0)) {
-            this.x = this.x - 101;
+            this.x = this.x - getXCoordinateInPixels(1);
         } else if ((pressedKey === 'up') && (this.y > 0)) {
-            this.y = this.y - 80;
+            this.y = this.y - getYCoordinateInPixels(1);
         } else if ((pressedKey === 'right') && (this.x < 400)) {
-            this.x = this.x + 101;
+            this.x = this.x + getXCoordinateInPixels(1);
         } else if ((pressedKey === 'down') && (this.y < 350)) {
-            this.y = this.y + 80;
-        }
-    }
-    
+            this.y = this.y + getYCoordinateInPixels(1);
+        };
+    };
 };
-
 
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
+let topEnemyRow = .7;
+let middleEnemyRow = 1.7;
+let bottomEnemyRow = 2.7;
+let firstColOffScreen = -1;
+let secondColOffScreen = -2;
+let reallyFarColOffScreen = -22;
+
 let allEnemies = [
-    new Enemy(-100,60,20),
-    new Enemy(-50,60,120),
-    new Enemy(-2500,60,380),
-    new Enemy(-2000,145,420),
-    new Enemy(-20,145,340),
-    new Enemy(-250,230,200),
-    new Enemy(-20,230,380) 
-]
+    new Enemy(getXCoordinateInPixels(firstColOffScreen),getYCoordinateInPixels(topEnemyRow),20),
+    new Enemy(getXCoordinateInPixels(firstColOffScreen),getYCoordinateInPixels(topEnemyRow),120),
+    new Enemy(getXCoordinateInPixels(reallyFarColOffScreen),getYCoordinateInPixels(topEnemyRow),340),
+    new Enemy(getXCoordinateInPixels(reallyFarColOffScreen),getYCoordinateInPixels(middleEnemyRow),400),
+    new Enemy(getXCoordinateInPixels(firstColOffScreen),getYCoordinateInPixels(middleEnemyRow),300),
+    new Enemy(getXCoordinateInPixels(secondColOffScreen),getYCoordinateInPixels(bottomEnemyRow),200),
+    new Enemy(getXCoordinateInPixels(firstColOffScreen),getYCoordinateInPixels(bottomEnemyRow),340)
+];
 
 // Place the player object in a variable called player
-
-let player = new Player(202, 380);
-
+let player = new Player(getXCoordinateInPixels(2), getYCoordinateInPixels(4.6));
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
