@@ -1,17 +1,20 @@
+// Sets selectors and event listeners to handle the end of
+// game popup and restart button.
 function gameWon() {
     let $popup = document.querySelector('.winner');
-            $popup.classList.remove('hide');
-            player.resetPlayer();
-            let $playAgain = document.querySelector('.play-again');
-            $playAgain.addEventListener('click', function() {
-                $popup.classList.add('hide');
-                allEnemies.forEach((enemy) => {
-                    let max = getXCoordinateInPixels(-5);
-                    let min = getXCoordinateInPixels(-1)
-                    enemy.x = Math.floor(Math.random() * (max - min)) + min;
-                });
-            })
-};
+    $popup.classList.remove('hide');
+    player.resetPlayer();
+    let $playAgain = document.querySelector('.play-again');
+    $playAgain.addEventListener('click', function() {
+        $popup.classList.add('hide');
+        allEnemies.forEach((enemy) => {
+            let max = getXCoordinateInPixels(-5);
+            let min = getXCoordinateInPixels(-1);
+            enemy.x = Math.floor(Math.random() * (max - min)) + min;
+        });
+    });
+}
+
 // Enemies our player must avoid
 var Enemy = function(x, y, speed) {
     // Variables applied to each of our instances go here,
@@ -31,13 +34,13 @@ Enemy.prototype.update = function(dt) {
     // which will ensure the game runs at the same speed for
     // all computers.
 
-    // This if statement detects if the Enemy has crossed the
-    // screen and if not multiplies the movement by tge dt parameter.
+    // This detects if the Enemy has crossed the screen and
+    // if not multiplies the movement by tge dt parameter.
     if (this.x > getXCoordinateInPixels(5)) {
-        this.x = getXCoordinateInPixels(-5)
+        this.x = getXCoordinateInPixels(-5);
     } else {
         this.x = this.x + this.speed * dt;
-    }
+    };
 };
 
 // Draw the enemy on the screen, required method for game
@@ -45,13 +48,16 @@ Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
+// Multiply x and y coordinates to convert row/column
+// numbers into pixels.
+
 function getXCoordinateInPixels(x) {
     return x * 101;
-};
+}
 
 function getYCoordinateInPixels(y) {
     return y * 83;
-};
+}
 
 // Now write your own player class
 // This class requires an update(), render() and
@@ -62,13 +68,18 @@ class Player {
         this.x = x;
         this.y = y;
         this.sprite = 'images/char-boy.png';
-    }
+    };
 
+    // Reset the player back to the starting position.
     resetPlayer() {
         this.x = getXCoordinateInPixels(2);
-        this.y = getYCoordinateInPixels(5);
-    }
+        this.y = getYCoordinateInPixels(4.6);
+    };
 
+    // Takes the points in the player/enemy images where the
+    // sprite exists for more accurate collision, detects
+    // collisions, calls resetPlayer function on collision,
+    // and checks for the game being won (reaching water).
     update() {
         allEnemies.forEach((enemy) => {
             let playerTopContactPixel = 110;
@@ -95,18 +106,20 @@ class Player {
                 this.resetPlayer();
             } else if ((playerYEnd >= enemyYStart) && (playerYEnd <= enemyYEnd) && (playerXStart >= enemyXStart) && (playerXStart <= enemyXEnd)) {
                 this.resetPlayer();
-            }
+            };
           });
 
         if (this.y <= 0) {
             gameWon();
-        }
-    }
+        };
+    };
 
     render() {
         ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-    }
+    };
 
+    // Increments player position by 1 row/column when the
+    // corresponding key is pressed.
     handleInput(pressedKey) {
         if ((pressedKey === 'left') && (this.x > 0)) {
             this.x = this.x - getXCoordinateInPixels(1);
@@ -116,25 +129,24 @@ class Player {
             this.x = this.x + getXCoordinateInPixels(1);
         } else if ((pressedKey === 'down') && (this.y < 350)) {
             this.y = this.y + getYCoordinateInPixels(1);
-        }
-    }
+        };
+    };
 };
 
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 let allEnemies = [
-    new Enemy(getXCoordinateInPixels(-1),getYCoordinateInPixels(1),20),
-    new Enemy(getXCoordinateInPixels(-1),getYCoordinateInPixels(1),120),
-    new Enemy(getXCoordinateInPixels(-24),getYCoordinateInPixels(1),380),
-    new Enemy(getXCoordinateInPixels(-19),getYCoordinateInPixels(2),420),
-    new Enemy(getXCoordinateInPixels(-1),getYCoordinateInPixels(2),340),
-    new Enemy(getXCoordinateInPixels(-2),getYCoordinateInPixels(3),200),
-    new Enemy(getXCoordinateInPixels(-1),getYCoordinateInPixels(3),380)
+    new Enemy(getXCoordinateInPixels(-1),getYCoordinateInPixels(.7),20),
+    new Enemy(getXCoordinateInPixels(-1),getYCoordinateInPixels(.7),120),
+    new Enemy(getXCoordinateInPixels(-24),getYCoordinateInPixels(.7),380),
+    new Enemy(getXCoordinateInPixels(-19),getYCoordinateInPixels(1.7),420),
+    new Enemy(getXCoordinateInPixels(-1),getYCoordinateInPixels(1.7),340),
+    new Enemy(getXCoordinateInPixels(-2),getYCoordinateInPixels(2.7),200),
+    new Enemy(getXCoordinateInPixels(-1),getYCoordinateInPixels(2.7),380)
 ];
 
 // Place the player object in a variable called player
-
-let player = new Player(getXCoordinateInPixels(2), getYCoordinateInPixels(5));
+let player = new Player(getXCoordinateInPixels(2), getYCoordinateInPixels(4.6));
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
