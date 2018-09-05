@@ -85,7 +85,7 @@ class Player {
         allEnemies.forEach((enemy) => {
             let playerTopContactPixel = 110;
             let playerBottomContactPixel = 135;
-            let playerLeftContactPixel = 17;
+            let playerLeftContactPixel = 20;
             let playerRightContactPixel = 80;
             let enemyTopContactPixel = 77;
             let enemyBottomContactPixel = 143;
@@ -99,13 +99,21 @@ class Player {
             let playerYEnd = this.y + playerBottomContactPixel;
             let enemyYStart = enemy.y + enemyTopContactPixel;
             let enemyYEnd = enemy.y + enemyBottomContactPixel;
-            if ((playerXStart >= enemyXStart) && (playerXStart <= enemyXEnd) && (playerYStart >= enemyYStart) && (playerYStart <= enemyYEnd)) {
+            // If player is to the right of enemy
+            if ((playerXStart >= enemyXStart) && (playerXStart <= enemyXEnd) &&
+            (playerYStart >= enemyYStart) && (playerYStart <= enemyYEnd)) {
                 this.resetPlayer();
-            } else if ((playerXEnd >= enemyXStart) && (playerXEnd <= enemyXEnd) && (playerYStart >= enemyYStart) && (playerYStart <= enemyYEnd)) {
+            // If player is to the left of enemy
+            } else if ((playerXEnd >= enemyXStart) && (playerXEnd <= enemyXEnd) &&
+            (playerYStart >= enemyYStart) && (playerYStart <= enemyYEnd)) {
                 this.resetPlayer();
-            } else if ((playerYStart >= enemyYStart) && (playerYStart <= enemyYEnd) && (playerXStart >= enemyXStart) && (playerXStart <= enemyXEnd)) {
+            // If player is above enemy
+            } else if ((playerYStart >= enemyYStart) && (playerYStart <= enemyYEnd) &&
+            (playerXStart >= enemyXStart) && (playerXStart <= enemyXEnd)) {
                 this.resetPlayer();
-            } else if ((playerYEnd >= enemyYStart) && (playerYEnd <= enemyYEnd) && (playerXStart >= enemyXStart) && (playerXStart <= enemyXEnd)) {
+            // If player is below enemy
+            } else if ((playerYEnd >= enemyYStart) && (playerYEnd <= enemyYEnd) &&
+            (playerXStart >= enemyXStart) && (playerXStart <= enemyXEnd)) {
                 this.resetPlayer();
             };
           });
@@ -136,14 +144,21 @@ class Player {
 
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
+let topEnemyRow = .7;
+let middleEnemyRow = 1.7;
+let bottomEnemyRow = 2.7;
+let firstColOffScreen = -1;
+let secondColOffScreen = -2;
+let reallyFarColOffScreen = -22;
+
 let allEnemies = [
-    new Enemy(getXCoordinateInPixels(-1),getYCoordinateInPixels(.7),20),
-    new Enemy(getXCoordinateInPixels(-1),getYCoordinateInPixels(.7),120),
-    new Enemy(getXCoordinateInPixels(-24),getYCoordinateInPixels(.7),380),
-    new Enemy(getXCoordinateInPixels(-19),getYCoordinateInPixels(1.7),420),
-    new Enemy(getXCoordinateInPixels(-1),getYCoordinateInPixels(1.7),340),
-    new Enemy(getXCoordinateInPixels(-2),getYCoordinateInPixels(2.7),200),
-    new Enemy(getXCoordinateInPixels(-1),getYCoordinateInPixels(2.7),380)
+    new Enemy(getXCoordinateInPixels(firstColOffScreen),getYCoordinateInPixels(topEnemyRow),20),
+    new Enemy(getXCoordinateInPixels(firstColOffScreen),getYCoordinateInPixels(topEnemyRow),120),
+    new Enemy(getXCoordinateInPixels(reallyFarColOffScreen),getYCoordinateInPixels(topEnemyRow),340),
+    new Enemy(getXCoordinateInPixels(reallyFarColOffScreen),getYCoordinateInPixels(middleEnemyRow),400),
+    new Enemy(getXCoordinateInPixels(firstColOffScreen),getYCoordinateInPixels(middleEnemyRow),300),
+    new Enemy(getXCoordinateInPixels(secondColOffScreen),getYCoordinateInPixels(bottomEnemyRow),200),
+    new Enemy(getXCoordinateInPixels(firstColOffScreen),getYCoordinateInPixels(bottomEnemyRow),340)
 ];
 
 // Place the player object in a variable called player
