@@ -1,3 +1,17 @@
+function gameWon() {
+    let $popup = document.querySelector('.winner');
+            $popup.classList.remove('hide');
+            player.resetPlayer();
+            let $playAgain = document.querySelector('.play-again');
+            $playAgain.addEventListener('click', function() {
+                $popup.classList.add('hide');
+                allEnemies.forEach((enemy) => {
+                    let max = getXCoordinateInPixels(-5);
+                    let min = getXCoordinateInPixels(-1)
+                    enemy.x = Math.floor(Math.random() * (max - min)) + min;
+                });
+            })
+};
 // Enemies our player must avoid
 var Enemy = function(x, y, speed) {
     // Variables applied to each of our instances go here,
@@ -17,7 +31,7 @@ Enemy.prototype.update = function(dt) {
     // which will ensure the game runs at the same speed for
     // all computers.
 
-    // This if statement detects if the Enemy has crossed the 
+    // This if statement detects if the Enemy has crossed the
     // screen and if not multiplies the movement by tge dt parameter.
     if (this.x > getXCoordinateInPixels(5)) {
         this.x = getXCoordinateInPixels(-5)
@@ -39,7 +53,6 @@ function getYCoordinateInPixels(y) {
     return y * 83;
 };
 
-
 // Now write your own player class
 // This class requires an update(), render() and
 // a handleInput() method.
@@ -49,7 +62,6 @@ class Player {
         this.x = x;
         this.y = y;
         this.sprite = 'images/char-boy.png';
-
     }
 
     resetPlayer() {
@@ -87,18 +99,7 @@ class Player {
           });
 
         if (this.y <= 0) {
-            let $popup = document.querySelector('.winner');
-            $popup.classList.remove('hide');
-            this.resetPlayer();
-            let $playAgain = document.querySelector('.play-again');
-            $playAgain.addEventListener('click', function() {
-                $popup.classList.add('hide');
-                allEnemies.forEach((enemy) => {
-                    let max = getXCoordinateInPixels(-5);
-                    let min = getXCoordinateInPixels(-1)
-                    enemy.x = Math.floor(Math.random() * (max - min)) + min;
-                });
-            })
+            gameWon();
         }
     }
 
@@ -117,9 +118,7 @@ class Player {
             this.y = this.y + getYCoordinateInPixels(1);
         }
     }
-    
 };
-
 
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
@@ -130,13 +129,12 @@ let allEnemies = [
     new Enemy(getXCoordinateInPixels(-19),getYCoordinateInPixels(2),420),
     new Enemy(getXCoordinateInPixels(-1),getYCoordinateInPixels(2),340),
     new Enemy(getXCoordinateInPixels(-2),getYCoordinateInPixels(3),200),
-    new Enemy(getXCoordinateInPixels(-1),getYCoordinateInPixels(3),380) 
-]
+    new Enemy(getXCoordinateInPixels(-1),getYCoordinateInPixels(3),380)
+];
 
 // Place the player object in a variable called player
 
-let player = new Player(getXCoordinateInPixels(2), 380);
-
+let player = new Player(getXCoordinateInPixels(2), getYCoordinateInPixels(5));
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
